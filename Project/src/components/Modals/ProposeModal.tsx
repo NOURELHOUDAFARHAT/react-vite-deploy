@@ -1,0 +1,118 @@
+import React, { useState } from "react";
+import { Button } from "../atoms/Buttons/Button";
+import { ProposeUrlModal } from "./ProposeUrlModal";
+
+import { ProposeTabaaniModal } from "./ProposeTabaaniModal";
+import DaysSelectionTabs from "../Slider/DaysSelectionTabs"; // Added import for DaysSelectionTabs
+import Modal from "react-modal";
+import {ProposeGoogleMapsModal} from "./ProposeGoogleMapsModal";
+
+
+
+interface ProposeModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+
+  placeId: String,
+  day: Number,
+  tripId:String,
+}
+const customStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Semi-transparent black overlay
+    backdropFilter: 'blur(5px)', // Blur effect for the overlay
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-40%, -40%)',
+    border: 'none', // Optional: Remove border if needed
+    backgroundColor: 'transparent',
+  },
+};
+
+// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
+Modal.setAppElement("#root");
+const ProposeModal: React.FC<ProposeModalProps> = ({ isOpen, onClose, placeId,day,tripId }) => {
+  const [activeDay, setActiveDay] = useState<number>(1);
+  
+  
+  const handleDayChange = (number: number) => {
+    setActiveDay(number);
+  };
+
+  return (
+    <>
+      {isOpen && (
+        <div className="flex items-start justify-center ">
+        <Modal
+          isOpen={isOpen}
+          onRequestClose={onClose}
+          style={customStyles}
+        >
+          <div className="  bg-white dark:bg-sidedark rounded-md shadow-lg p-8 max-w-3xl w-full ">
+            <div className="flex justify-end">
+              <Button
+                type="button"
+                bg="transparent"
+                size="small"
+                onClick={onClose}
+              >
+                <span>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    stroke="#000000"
+                  >
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="#FFAF20"
+                        strokeWidth="1.5"
+                      ></circle>
+                      <path
+                        d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"
+                        stroke="#FFAF20"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      ></path>
+                    </g>
+                  </svg>
+                </span>
+              </Button>
+            </div>
+
+            <div className="mb-3">
+              <DaysSelectionTabs
+                number={[1, 2, 3]}
+                buttonNames={["From Tabaani", "From Google Maps", "From URL"]}
+                activeDay={activeDay}
+                handleDayChange={handleDayChange}
+              />
+            </div>
+
+            {activeDay === 1 && <ProposeTabaaniModal />}
+            {activeDay === 2 && <ProposeGoogleMapsModal placeId={placeId} day={day}  tripId={tripId}  />}
+            {activeDay === 3 && <ProposeUrlModal placeId={placeId} day={day}  tripId={tripId}/>}
+          </div>
+        </Modal>
+        </div>
+      )}
+    </>
+  );
+};
+
+export { ProposeModal };

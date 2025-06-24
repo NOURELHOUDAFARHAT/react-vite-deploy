@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*"], // Modify this path based on your project structure
+  "exclude": ["node_modules"], // Exclude any directories you don't want TypeScript to process
+}
