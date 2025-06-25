@@ -25,5 +25,8 @@
   "directories": {
     "test": "test"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "vite": "^7.0.0"
+  }
 }
